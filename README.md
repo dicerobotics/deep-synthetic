@@ -10,3 +10,8 @@ Disclaimer: The current state of the source code is incomplete and broken.
 연구목표 (Reserach Objectives):
 - 실감 합성 센서 영상 생성기법 연구 (Realistic synthetic sensor image generation technique)
 - 실감 합성 센서 영상과 실제 센서 영상 인공지능 기반 비교분석기법 연구 (A research on AI-based comparative analysis technique of realistic synthetic sensor images and real sensor images)
+
+
+# How to run the code
+- Start container
+- Run main.py
