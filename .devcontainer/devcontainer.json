@@ -18,11 +18,7 @@
   "remoteEnv": {
     "SSH_AUTH_SOCK": "/ssh-agent"
   },
-
-  // "settings": {
-  //   "terminal.integrated.shell.linux": "/bin/bash"
-  // },
-
+  
   "customizations": {
     "vscode": {
       "settings": {
