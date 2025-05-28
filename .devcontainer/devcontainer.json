@@ -1,0 +1,19 @@
+{
+  "name": "deep-synthetic-dev",
+  "image": "nvcr.io/nvidia/pytorch:23.08-py3",
+  "workspaceFolder": "/workspace/project",
+  "runArgs": [
+    "--gpus", "all",
+    "--ipc=host",
+    "--ulimit", "memlock=-1",
+    "--ulimit", "stack=67108864"
+  ],
+  "mounts": [
+    "source=${localWorkspaceFolder},target=/workspace/deep-synthetic,type=bind"
+  ],
+  "settings": {
+    "terminal.integrated.shell.linux": "/bin/bash"
+  },
+  "postCreateCommand": "pip install -r requirements.txt"
+}
+
