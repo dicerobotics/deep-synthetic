@@ -23,5 +23,5 @@
     "terminal.integrated.shell.linux": "/bin/bash"
   },
 
-  "postCreateCommand": "git config --global user.name 'dicerobotics' && git config --global user.email 'arshad.ae@hotmail.com' && pip install -r requirements.txt"
+  "postCreateCommand": "mkdir -p ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts && git config --global user.name 'dicerobotics' && git config --global user.email 'arshad.ae@hotmail.com' && pip install -r requirements.txt"
 }
