@@ -1,6 +1,6 @@
 # High volume directories
-/workspace/deep-synthetic/datasets/
-/workspace/deep-synthetic/results/
+datasets/
+results/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
