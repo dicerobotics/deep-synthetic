@@ -1,4 +1,4 @@
-This file documents all changes made to the original CUT repository within the third_party/CUT directory. These changes diverge from the upstream version and are tracked here for transparency, reproducibility, and ease of merging or re-syncing in the future.
+This file documents all changes made to the original repository (https://github.com/taesungp/contrastive-unpaired-translation) within the third_party/CUT directory. These changes diverge from the upstream version and are tracked here for transparency, reproducibility, and ease of merging or re-syncing in the future.
 
 **Notes**
 - Do not pull directly from the upstream repository without reviewing these changes.

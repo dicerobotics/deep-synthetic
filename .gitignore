@@ -1,6 +1,7 @@
 # High volume directories
 datasets/
 results/
+third_party/CUT/checkpoints/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
