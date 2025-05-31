@@ -10,8 +10,8 @@ cd ./scripts/
 ```
 
 **Output**  
-`/workspace/deep-synthetic/results/mwir_real2cut/test_latest/images/ ` 
-`/workspace/deep-synthetic/results/mwir_sim2cut/test_latest/images/ ` 
+`/workspace/deep-synthetic/results/mwir_real2cut/test_latest/images/ `   
+`/workspace/deep-synthetic/results/mwir_sim2cut/test_latest/images/ `   
 
 ### **Nomenclature**
 **Experiments**  

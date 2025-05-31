@@ -12,8 +12,8 @@ python train.py \
   --dataroot ./../../datasets/mwir_sim2cut \
   --name mwir_sim2cut \
   --CUT_mode CUT \
-  --n_epochs 100 \
-  --n_epochs_decay 100 \
+  --n_epochs 20 \
+  --n_epochs_decay 20 \
   --gpu_ids 0
 
 # Indicate training completion.
@@ -28,7 +28,7 @@ python test.py \
   --phase test \
   --no_dropout \
   --results_dir ./../../results/ \
-  --num_test 50  # Default 50, Or a large number greater than your dataset size i.e. 9200 for mwir_sim2cut
+  --num_test 300  # Default 50, Or a large number greater than your dataset size
 
 echo "Finished testing/infering CUT for mwir_sim2cut."
 

@@ -95,14 +95,14 @@ def evaluate_dirs(real_A_dir, fake_B_dir, real_B_dir):
 
 
     print(f"Samples compared: {len(psnr_vals)}")
-    print(f"→ PSNR (fake_B vs real_B): {np.mean(psnr_vals):.2f} dB")
+    print(f"→ PSNR (fake_B vs real_B): {np.mean(psnr_vals):.2f} dB")  # How to type `→` : `Ctrl + Shift + U`, then type `2192`, then `Enter` or `Space`
     print(f"→ LPIPS (fake_B vs real_B): {np.mean(lpips_vals):.4f}")
     print(f"→ SSIM (fake_B vs real_B): {np.mean(ssim_vals):.4f}")
     
 # ----- Run -----
 # Evaluate CUT results
 evaluate_dirs(
-    real_A_dir='/workspace/deep-synthetic/third_party/_CUT/results/mwir2sim_cut/test_latest/images/real_A',
-    fake_B_dir='/workspace/deep-synthetic/third_party/_CUT/results/mwir2sim_cut/test_latest/images/fake_B',
-    real_B_dir='/workspace/deep-synthetic/third_party/_CUT/results/mwir2sim_cut/test_latest/images/real_B'
+    real_A_dir='/workspace/deep-synthetic/results/mwir_real2cut/test_latest/images/real_A',
+    fake_B_dir='/workspace/deep-synthetic/results/mwir_real2cut/test_latest/images/fake_B',
+    real_B_dir='/workspace/deep-synthetic/results/mwir_real2cut/test_latest/images/real_B'
 )
