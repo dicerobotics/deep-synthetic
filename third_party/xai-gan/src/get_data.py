@@ -20,7 +20,7 @@ Modification Details: See MODIFICATIONS.md file
 
 from torch.utils.data import ConcatDataset, DataLoader, sampler
 from torchvision import transforms, datasets
-data_folder = "/workspace/deep-synthetic/third_party/xai-gan"
+data_folder = "/workspace/deep-synthetic/third_party/xai-gan/src/data"
 
 
 def fminst_data():

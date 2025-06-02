@@ -33,8 +33,9 @@ Each entry follows:
 
 
 **Date**: [2025-06-02]  
-**Commit (optional)**:     
+**Commit**: 5e07ba06702ef000b0eb41b0d8731eaeebd4a771      
 **Author**: [Arshad MA]  
 **Description**: Changed data storage directory  
 **Files/Sections Changed**: `src/get_data.py`  
 **Reason**: To make data handling consistent with the project.  
+
