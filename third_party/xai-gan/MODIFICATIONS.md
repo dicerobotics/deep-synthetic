@@ -33,7 +33,7 @@ Each entry follows:
 
 
 **Date**: [2025-06-02]  
-**Commit**: 5e07ba06702ef000b0eb41b0d8731eaeebd4a771      
+**Commit**: d6a5cb40e8911ad6fd25d51a8be6703d6b077d36      
 **Author**: [Arshad MA]  
 **Description**: Changed data storage directory  
 **Files/Sections Changed**: `src/get_data.py`  
