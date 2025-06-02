@@ -1,7 +1,11 @@
-# High volume directories
+# High volume or proprietary directories
 datasets/
 results/
 third_party/CUT/checkpoints/
+third_party/xai-gan/src/data
+third_party/xai-gan/src/generated.npy
+third_party/xai-gan/src/real.npy
+third_party/xai-gan/src/tmp/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
