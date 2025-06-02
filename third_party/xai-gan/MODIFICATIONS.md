@@ -16,21 +16,16 @@ Each entry follows:
 
 **Modification Log**
 
-Date: [2025-05-29]
-Author: [Arshad MA]
-Description: Removed .git .gitignore .gitmodules and Added __init__.py
-Files/Sections Changed:
-    - .git/
-    - .gitignore
-    - __init__.py 
-Reason: Our project uses this repo as a python package.
------------------------------------------------------------------------
+Date: [2025-05-29]  
+Author: [Arshad MA]  
+Description: Removed `.git` `.gitignore` `.gitmodules` and Added `__init__.py ` 
+Files/Sections Changed: `.git/`, `.gitignore`, `__init__.py`  
+Reason: Our project uses this repo as a python package.  
 
-Date: [2025-06-02]
-Author: [Arshad MA]
-Description: Commented/Uncommented some portion of experiment_enum.py
-Files/Sections Changed:
-    - experiment_enum.py
-Reason: Modified to include/exclude experiments as per need. Further changes to include/exclude experiments won't be logged in this file MODIFICATIONS.md
------------------------------------------------------------------------
+
+Date: [2025-06-02]  
+Author: [Arshad MA]  
+Description: Commented/Uncommented some portion of `experiment_enum.py`  
+Files/Sections Changed: `experiment_enum.py`  
+Reason: Modified to include/exclude experiments as per need. Further changes to include/exclude experiments won't be logged in this file `MODIFICATIONS.md`  
 
