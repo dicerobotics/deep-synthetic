@@ -4,7 +4,7 @@ This file documents all changes made to the original repository (https://github.
 - Do not pull directly from the upstream repository without reviewing these changes.
 - Any planned updates from upstream should be merged manually with conflict resolution and new entries added here.
 
-**Format**
+**Format**  
 Each entry follows:
 
     - Date
@@ -17,13 +17,15 @@ Each entry follows:
 **Modification Log**
 
 **Date**: [2025-05-29]  
+**Commit (optional)**:  
 **Author**: [Arshad MA]  
-**Description**: Removed `.git` `.gitignore` `.gitmodules` and Added `__init__.py ` 
-**Files/Sections Changed**: `.git/`, `.gitignore`, `__init__.py`  
+**Description**: Removed `.git` `.gitignore` `.gitmodules` and Added `__init__.py `   
+**Files/Sections Changed**: `.git/`, `.gitignore`, `__init__.py`    
 **Reason**: Our project uses this repo as a python package.  
 
 
 **Date**: [2025-06-02]  
+**Commit (optional)**:  
 **Author**: [Arshad MA]  
 **Description**: Commented/Uncommented some portion of `experiment_enum.py`  
 **Files/Sections Changed**: `experiment_enum.py`  
