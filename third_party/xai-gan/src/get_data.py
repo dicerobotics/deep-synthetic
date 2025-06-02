@@ -9,11 +9,18 @@ Project:
 
 Contact:
     explainable.gan@gmail.com
+
+Modified by: Arshad MA
+Modification Date: 2025.06.02
+Modification Details: See MODIFICATIONS.md file
 """
+
+
+
 
 from torch.utils.data import ConcatDataset, DataLoader, sampler
 from torchvision import transforms, datasets
-data_folder = "./data"
+data_folder = "/workspace/deep-synthetic/third_party/xai-gan"
 
 
 def fminst_data():
