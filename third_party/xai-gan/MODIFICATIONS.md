@@ -25,7 +25,7 @@ Each entry follows:
 
 
 **Date**: [2025-06-02]  
-**Commit (optional)**:  
+**Commit (optional)**:     
 **Author**: [Arshad MA]  
 **Description**: Commented/Uncommented some portion of `experiment_enum.py`  
 **Files/Sections Changed**: `experiment_enum.py`  
