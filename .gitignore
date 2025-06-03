@@ -1,4 +1,4 @@
-# High volume or proprietary directories
+# High volume, temporary, and proprietary directories
 datasets/
 results/
 models/

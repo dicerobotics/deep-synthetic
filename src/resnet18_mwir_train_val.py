@@ -1,8 +1,8 @@
 """
-Script Name: resnet18_mwir.py
+Script Name: resnet18_mwir_train_val.py
 
 Purpose:
-    This script trains a ResNet18 classifier on MWIR (mid-wave infrared) military vehicle images
+    This script fine tunes a pre-trains a ResNet18 classifier on MWIR (mid-wave infrared) military vehicle images
     using PyTorch, with automatic validation after each epoch and final accuracy reporting.
 
 Features:
