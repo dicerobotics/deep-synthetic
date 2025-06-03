@@ -9,6 +9,9 @@ Project:
 
 Contact:
     explainable.gan@gmail.com
+
+Modified by: Arshad MA
+Modification Details: See MODIFICATIONS.md
 """
 
 from get_data import get_loader
@@ -48,7 +51,7 @@ class Experiment:
         self.samples = 16
         torch.backends.cudnn.benchmark = True
 
-    def run(self, logging_frequency=4) -> (list, list):
+    def run(self, logging_frequency=4) -> tuple[list, list]:
         """
         This function runs the experiment
         :param logging_frequency: how frequently to log each epoch (default 4)
@@ -97,8 +100,10 @@ class Experiment:
             if self.explainable and (epoch - 1) == explanationSwitch:
                 if self.type["dataset"] == "cifar":
                     self.generator.out.register_backward_hook(explanation_hook_cifar)
+                    # self.generator.out.register_full_backward_hook(explanation_hook_cifar)
                 else:
                     self.generator.out.register_backward_hook(explanation_hook)
+                    # self.generator.out.register_full_backward_hook(explanation_hook)
                 local_explainable = True
 
             for n_batch, (real_batch, _) in enumerate(loader):

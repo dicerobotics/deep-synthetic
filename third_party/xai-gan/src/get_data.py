@@ -11,7 +11,6 @@ Contact:
     explainable.gan@gmail.com
 
 Modified by: Arshad MA
-Modification Date: 2025.06.02
 Modification Details: See MODIFICATIONS.md file
 """
 

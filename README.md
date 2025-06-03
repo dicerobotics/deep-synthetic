@@ -1,6 +1,6 @@
-## Comments by Arshad MA
+Comments by Arshad MA
 
-## Train and test the CUT Model
+# Train and test the CUT Model
 Objective: Transferring style from OktalSE simulated images onto MWIR real images and vice versa.
 
 ``` bash
@@ -95,3 +95,30 @@ Samples: 9200 (Complete dataset: train set and test set)
 | LPIPS (fake_B vs real_B)| 0.3865  |
 | SSIM (fake_B vs real_B) | 0.5578  |
 | SSIM (real_A vs fake_B) | 0.6943  |
+
+
+# How to integrate Grad-CAM in Pix2Pix training?
+### Basic workflow
+
+**1. Pix2Pix generator**:
+Input: source image (e.g., segmentation mask)
+Output: generated image (fake photo)
+
+**2. Discriminator**:
+Tries to distinguish generated vs real images conditioned on the input
+
+**3. Classifier + Grad-CAM**:
+Pretrained classifier frozen (e.g., ResNet trained on real photos)
+For each generated image, compute Grad-CAM map for the predicted or target class.
+
+**4. Grad-CAM loss**:
+Compare Grad-CAM maps of generated images to real target images’ Grad-CAM maps (or use a target pattern)
+This ensures generated images activate the classifier similarly to real images.
+
+**5. Loss to minimize for generator**:
+
+- GAN adversarial loss (Pix2Pix original)
+
+- Reconstruction loss (e.g., L1 between generated & target image)
+
+- Grad-CAM loss (new) to align important regions

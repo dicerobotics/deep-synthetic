@@ -32,10 +32,22 @@ Each entry follows:
 **Reason**: Modified to include/exclude experiments as per need. Further changes to include/exclude experiments won't be logged in this file `MODIFICATIONS.md`.  
 
 
-**Date**: [2025-06-02]  
-**Commit**: d6a5cb40e8911ad6fd25d51a8be6703d6b077d36      
+**Date**: [2025-06-02]      
 **Author**: [Arshad MA]  
 **Description**: Changed data storage directory  
 **Files/Sections Changed**: `src/get_data.py`  
 **Reason**: To make data handling consistent with the project.  
 
+``` Possible Undone Pending
+**Date**: [2025-06-02]   
+**Author**: [Arshad MA]  
+**Description**: Replaced PyTorch depreciated function `module.register_backword_hook(hook_fn)` with `module.register_full_backword_hook(hook_fn)`.  
+**Files/Sections Changed**: `src/experiment.py`  
+**Reason**: To handle runtime warnings.
+```
+
+**Date**: [2025-06-02]      
+**Author**: [Arshad MA]  
+**Description**: Corrected Syntax
+**Files/Sections Changed**: `src/experiment.py`  
+**Reason**: To make data handling consistent with the project.  
