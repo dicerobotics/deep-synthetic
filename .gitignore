@@ -1,7 +1,7 @@
 # High volume, temporary, and proprietary directories
 datasets/
 results/
-models/
+checkpoints/
 tmp/
 third_party/CUT/checkpoints/
 third_party/xai-gan/src/data

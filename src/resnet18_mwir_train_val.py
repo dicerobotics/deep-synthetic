@@ -30,6 +30,8 @@ Assumptions:
 Usage:
     Modify DATA_DIR to point to the base dataset directory containing `train/` and `val/`.
     Adjust NUM_CLASSES if your dataset changes.
+
+Author: [Arshad MA]
 """
 
 
