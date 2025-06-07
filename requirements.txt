@@ -1,4 +1,8 @@
 # General requirements
+torch>=2.1.0a0+29c30b1
+torchvision>=0.16.0a0
+scikit-image
+lpips 
 
 # submodule xai-gan
 captum>=0.8.0
@@ -15,8 +19,7 @@ pyparsing>=3.0.9
 python-dateutil>=2.8.2
 six>=1.16.0
 tensorboardX>=2.6.2.2
-torch>=2.1.0a0+29c30b1
-torchvision>=0.16.0a0
+
 
 
 # submodule CUT
@@ -24,5 +27,9 @@ dominate>=2.4.0
 visdom>=0.1.8.8
 packaging
 GPUtil>=1.4.0
-lpips 
-scikit-image
+
+
+# evaluate2
+clean-fid
+opencv-python
+scipy

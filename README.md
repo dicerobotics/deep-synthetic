@@ -1,4 +1,72 @@
-Comments by Arshad MA
+Authored by by Arshad MA
+
+## Workflow: Enhancing Synthetic MWIR Image Realism
+
+### 1. Data Preparation
+Collected a set of real MWIR images as ground truth.
+
+Used Cycle-Consistent Unsupervised Translation (CUT) to translate:
+
+Real MWIR → Simulator domain, producing simulator-style equivalents of real MWIR images.
+
+This allowed the creation of paired data:
+(Simulated MWIR, Real MWIR)
+where the simulated image is the CUT-translated version of the real MWIR.
+
+These aligned pairs are used to train the Pix2Pix model.
+
+
+### 2. Pix2Pix Training (Initial)
+Trained a Pix2Pix model to map:
+Simulated MWIR → Realistic MWIR
+
+Objective: Minimize a combination of:
+
+- Adversarial loss (from the GAN framework).
+
+- L1 reconstruction loss (between generated and real MWIR).
+
+### 3. Classifier + Grad-CAM Setup
+A ResNet-based classifier is trained on real MWIR images to perform a downstream task (e.g., classification).
+
+Grad-CAM is used to extract class-discriminative attention heatmaps from:
+
+Real MWIR images (ground truth attention).
+
+Pix2Pix-generated images (attention on translated fakes).
+
+
+
+### 4. Grad-CAM Consistency Feedback
+Compute the difference between Grad-CAM heatmaps of real and translated images.
+
+Introduce a heatmap consistency loss (e.g., L1 or SSIM between Grad-CAM maps).
+
+This encourages the generator to preserve semantically important features recognizable by the classifier.
+
+
+### 5. Feedback Training Loop
+Retrain or fine-tune the Pix2Pix Generator using a combined loss:
+
+``` java
+Total Loss = GAN Loss + λ1 * L1 Loss + λ2 * GradCAM Consistency Loss
+```
+`λ1` and `λ2` balance fidelity and semantic alignment.
+
+### 6. Iterate
+Optionally fine-tune the classifier with improved/generated data.
+
+Iterate this process to progressively improve realism and semantic utility.
+
+
+## Final Output
+A Pix2Pix Generator that produces MWIR images that:
+
+Are visually realistic and structurally faithful to real MWIR data.
+
+Retain semantically meaningful features, as validated by Grad-CAM similarity.
+
+
 
 # Train and test the CUT Model
 Objective: Transferring style from OktalSE simulated images onto MWIR real images and vice versa.

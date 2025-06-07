@@ -23,3 +23,16 @@ Each entry follows:
 **Files/Sections Changed**: `.git/`, `.gitmodule`, `.gitignore`, `__init__.py`.   
 **Reason**: Our project uses this repo as a package.  
 
+**Date**: [2025-06-05]  
+**Commit**:  
+**Author**: [Arshad MA]   
+**Description**: Included pre-trained models    
+**Files/Sections Changed**: checkpoints/.   
+**Reason**: We decided to fine-tune the pretrained models instead of traning from scratch.  
+
+**Date**: [2025-06-07]  
+**Commit**:  
+**Author**: [Arshad MA]   
+**Description**: Included scripts to run models    
+**Files/Sections Changed**: run_mwir_real2cut.sh, run_mwir_sym2cut.sh   
+**Reason**: Easy reference to run the CUT model.  
