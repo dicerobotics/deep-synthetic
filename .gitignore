@@ -1,4 +1,8 @@
 # High volume, temporary, and proprietary directories
+# (Optional but important) If the directory is already being tracked by Git, you’ll need to untrack it:
+# git rm -r --cached third_party/
+
+
 datasets/
 results/
 checkpoints/
