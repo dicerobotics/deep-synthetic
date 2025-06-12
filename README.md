@@ -1,70 +1,110 @@
 Authored by by Arshad MA
 
-## Workflow: Enhancing Synthetic MWIR Image Realism
+# Enhancing Realism of Synthetic MWIR Images with Semantically Guided GANs: A CUT and Grad-CAM Feedback Framework
 
-### 1. Data Preparation
-Collected a set of real MWIR images as ground truth.
+## Overview
 
-Used Cycle-Consistent Unsupervised Translation (CUT) to translate:
+This project addresses the challenge of improving the **realism and semantic fidelity** of synthetic **Mid-Wave Infrared (MWIR)** images, which are essential in defense, surveillance, and night-time imaging applications. Real MWIR data collection is expensive and difficult due to hardware cost, safety concerns, and environmental constraints. As an alternative, simulator-generated images (e.g., from OktalSE) can be used, but they often lack the visual quality and semantic detail required for training high-performing models.
 
-Real MWIR → Simulator domain, producing simulator-style equivalents of real MWIR images.
+We propose a **three-stage GAN-based framework** combining **Contrastive Unpaired Translation (CUT)**, **Pix2Pix**, and **Grad-CAM feedback** to bridge this simulation-to-reality gap.
 
-This allowed the creation of paired data:
-(Simulated MWIR, Real MWIR)
-where the simulated image is the CUT-translated version of the real MWIR.
+---
 
-These aligned pairs are used to train the Pix2Pix model.
+## Pipeline Overview
 
+### 1. **Pseudo-Pair Generation with CUT**
 
-### 2. Pix2Pix Training (Initial)
-Trained a Pix2Pix model to map:
-Simulated MWIR → Realistic MWIR
+- Real MWIR images from the **DSIAC ATR dataset** (9,200 images) are mapped to the simulator style using CUT.
+- Target domain consists of **300 OktalSE-simulated MWIR images** across varying times of day, seasons, and atmospheric conditions.
+- Output: Visually simulated versions of real MWIR images, preserving semantics.
 
-Objective: Minimize a combination of:
+### 2. **Pix2Pix Translation**
 
-- Adversarial loss (from the GAN framework).
+- A supervised **Pix2Pix** model learns to translate simulator images into realistic MWIR using CUT-generated pseudo-pairs.
+- Training loss:
+  - **Adversarial Loss**
+  - **L1 Reconstruction Loss**
+- This stage improves both perceptual realism and content retention.
 
-- L1 reconstruction loss (between generated and real MWIR).
+### 3. **Semantic Feedback with Grad-CAM**
 
-### 3. Classifier + Grad-CAM Setup
-A ResNet-based classifier is trained on real MWIR images to perform a downstream task (e.g., classification).
+- A **ResNet18 classifier**, pretrained on MWIR data, is used to generate Grad-CAM attention maps.
+- These maps are integrated into Pix2Pix training as a semantic loss term.
+- The model is fine-tuned for **200 additional epochs** (201–400), encouraging attention to semantically relevant regions.
 
-Grad-CAM is used to extract class-discriminative attention heatmaps from:
+---
 
-Real MWIR images (ground truth attention).
+## Training Details
 
-Pix2Pix-generated images (attention on translated fakes).
+### Stage 1: CUT Training
+- **Source**: Real MWIR (DSIAC ATR)
+- **Target**: OktalSE simulated images
+- Output: Pseudo-paired dataset
 
+### Stage 2: Pix2Pix Training
+- **Initial Training**: 200 epochs with batch size = 1, crop size = 256
+- **Losses**: GAN loss + L1 loss
+- Optimizer: Adam (lr = 0.0002, β1 = 0.5)
 
+### Stage 3: Semantic Feedback Fine-Tuning
+- **Model**: `pix2pix_gradcam`
+- **Additional Training**: 200 epochs (epochs 201–400)
+- **Losses**: GAN + L1 + Grad-CAM (λ = 10.0 for Grad-CAM loss)
 
-### 4. Grad-CAM Consistency Feedback
-Compute the difference between Grad-CAM heatmaps of real and translated images.
+---
 
-Introduce a heatmap consistency loss (e.g., L1 or SSIM between Grad-CAM maps).
+## Evaluation Metrics
 
-This encourages the generator to preserve semantically important features recognizable by the classifier.
+We used both **perceptual** and **semantic** evaluation metrics:
 
+- **FID**: Fréchet Inception Distance
+- **PSNR**: Peak Signal-to-Noise Ratio
+- **SSIM**: Structural Similarity Index
+- **GCSS**: Grad-CAM Structural Similarity
+- **CC**: Pearson Correlation Coefficient between attention maps
 
-### 5. Feedback Training Loop
-Retrain or fine-tune the Pix2Pix Generator using a combined loss:
+---
 
-``` java
-Total Loss = GAN Loss + λ1 * L1 Loss + λ2 * GradCAM Consistency Loss
-```
-`λ1` and `λ2` balance fidelity and semantic alignment.
+## Results
 
-### 6. Iterate
-Optionally fine-tune the classifier with improved/generated data.
+### Qualitative
+- Realistic textures and thermal structures were synthesized.
+- Grad-CAM maps showed stronger alignment with semantically relevant regions post-feedback.
 
-Iterate this process to progressively improve realism and semantic utility.
+### Quantitative
+- Substantial reduction in FID and improvements in PSNR and SSIM.
+- GCSS and CC validated stronger semantic fidelity.
 
+### Ablation Study
+- Models with Grad-CAM feedback consistently outperformed both CUT-only and standard Pix2Pix models.
 
-## Final Output
-A Pix2Pix Generator that produces MWIR images that:
+---
 
-Are visually realistic and structurally faithful to real MWIR data.
+## Conclusion
 
-Retain semantically meaningful features, as validated by Grad-CAM similarity.
+This work presents a robust framework for enhancing the **realism and semantic quality** of synthetic MWIR images using GANs and classifier feedback. The method enables more reliable synthetic datasets that can significantly aid model training in resource-scarce thermal domains.
+
+---
+
+## Citation
+
+If you use this work, please cite:
+
+@article{arshad2025paper,
+title={Enhancing Realism of Synthetic MWIR Images with Semantically Guided GANs: A CUT and Grad-CAM Feedback Framework},
+author={Muhammad Awais Arshad, Hyochoong Bang, ...},
+journal={Machine Vision and Applications},
+year={2025}
+}
+
+---
+
+## Contact
+
+For questions or collaborations, please contact:  
+📧 m.awais@kaist.ac.kr  
+🔬 [Mechanical Engineering Research Institute, KAIST]
+
 
 
 

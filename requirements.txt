@@ -1,35 +1,39 @@
 # General requirements
-torch>=2.1.0a0+29c30b1
-torchvision>=0.16.0a0
-scikit-image
-lpips 
+# torch==2.1.0a0+29c30b1
+numpy==1.26.4
+# torchvision==0.16.0a0
+scikit-image==0.25.2
+# lpips 
 
 # submodule xai-gan
-captum>=0.8.0
-certifi>=2023.7.22
-cycler>=0.11.0
-future>=1.0.0
-kiwisolver>=1.4.4
-matplotlib>=3.7.2
-numpy>=1.22.2,<1.25
-numba==0.57.1
-Pillow>=9.2.0
-protobuf>=4.21.12
-pyparsing>=3.0.9
-python-dateutil>=2.8.2
-six>=1.16.0
-tensorboardX>=2.6.2.2
+# captum>=0.8.0
+# certifi>=2023.7.22
+# cycler>=0.11.0
+# future>=1.0.0
+# kiwisolver>=1.4.4
+# matplotlib>=3.7.2
+# numba==0.57.1
+# Pillow>=9.2.0
+# protobuf>=4.21.12
+# pyparsing>=3.0.9
+# python-dateutil>=2.8.2
+# six>=1.16.0
+# tensorboardX>=2.6.2.2
 
 
 
 # submodule CUT
-dominate>=2.4.0
-visdom>=0.1.8.8
-packaging
-GPUtil>=1.4.0
+dominate==2.9.1
+# visdom>=0.1.8.8
+# packaging
+# GPUtil>=1.4.0
 
 
 # evaluate2
-clean-fid
-opencv-python
-scipy
+# clean-fid
+# opencv-python
+# scipy
+
+# Evalutions FID, PSNR, GCSS, cycler
+pytorch-fid==0.3.0 
+# skimage
