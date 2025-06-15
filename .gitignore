@@ -8,6 +8,7 @@ results/
 checkpoints/
 tmp/
 third_party/
+src_old/
 
 
 # Byte-compiled / optimized / DLL files

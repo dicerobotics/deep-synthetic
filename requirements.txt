@@ -1,9 +1,17 @@
 # General requirements
-# torch==2.1.0a0+29c30b1
 numpy==1.26.4
-# torchvision==0.16.0a0
 scikit-image==0.25.2
+dominate==2.9.1
+visdom>=0.1.8.8
+captum>=0.8.0
+
+
+
+
+# torch==2.1.0a0+29c30b1
+# torchvision==0.16.0a0
 # lpips 
+# dominate>=2.4.0
 
 # submodule xai-gan
 # captum>=0.8.0
@@ -23,7 +31,7 @@ scikit-image==0.25.2
 
 
 # submodule CUT
-dominate==2.9.1
+
 # visdom>=0.1.8.8
 # packaging
 # GPUtil>=1.4.0
