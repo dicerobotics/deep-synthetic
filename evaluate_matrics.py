@@ -48,21 +48,21 @@ real_cam_dir = REAL_MWIR_HEATMAP
 # 5             CUT Pseudopairs → Pix2Pix 
 # 6             CUT Pseudopairs → Pix2Pix-GradCAM 
 
-evaluation_scenario = 4
+evaluation_scenario = 3
 
 match evaluation_scenario:
     case 1: # "Simulator (Oktal-SE) Output":
         print("Evaluating matrics for Simulator (Oktal-SE) Output")
         target_dir = OKTAL_SE_MWIR
-        target_cam_dir = OKTAL_SE_MWIR_HEATMAP
+        target_cam_dir = '' # OKTAL_SE_MWIR_HEATMAP
     case 2: #"Simulator (Oktal-SE) → Pix2Pix"
         print("Evaluating matrics for Simulator (Oktal-SE) → Pix2Pix")
         target_dir = OKTAL_SE_MWIR_TO_PIX2PIX
-        target_cam_dir = OKTAL_SE_MWIR_TO_PIX2PIX_HEATMAP
+        target_cam_dir = '' # OKTAL_SE_MWIR_TO_PIX2PIX_HEATMAP
     case 3: #"Simulator (Oktal-SE) → Pix2Pix-GradCAM"
         print("Evaluating matrics for Simulator (Oktal-SE) → Pix2Pix-GradCAM")
         target_dir = OKTAL_SE_MWIR_TO_PIX2PIX_GRADCAM
-        target_cam_dir = OKTAL_SE_MWIR_TO_PIX2PIX_GRADCAM_HEATMAP
+        target_cam_dir = '' # OKTAL_SE_MWIR_TO_PIX2PIX_GRADCAM_HEATMAP
     case 4: #"Contrastive Unpaired Translation (CUT) Pseudopairs"
         print("Evaluating matrics for Contrastive Unpaired Translation (CUT) Pseudopairs")
         target_dir = CUT_TRANSLATED_REAL_MWIR
@@ -231,7 +231,7 @@ if gcss_value is not None and cc_value is not None:
     print(f"CAM SSIM: {ssim_value:.4f}")
 
 else:
-    print("Grad-CAM heatmaps not provided, skipping GCSS and CC.")
+    print("Grad-CAM heatmaps not provided, skipping GCSS, CC, and SSIM.")
 
 
 """

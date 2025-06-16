@@ -1,5 +1,3 @@
-FID Score: 228.5431
-PSNR: 15.7637 dB
-GCSS: 0.9838
-Correlation Coefficient (CC): 0.4147
-SSIM: 0.7778
+FID Score: 258.7744
+PSNR: 21.4122 dB
+Grad-CAM heatmaps not provided, skipping GCSS, CC, and SSIM.
