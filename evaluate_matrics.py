@@ -48,7 +48,7 @@ real_cam_dir = REAL_MWIR_HEATMAP
 # 5             CUT Pseudopairs → Pix2Pix 
 # 6             CUT Pseudopairs → Pix2Pix-GradCAM 
 
-evaluation_scenario = 3
+evaluation_scenario = 1
 
 match evaluation_scenario:
     case 1: # "Simulator (Oktal-SE) Output":
@@ -246,14 +246,14 @@ Make sure your images and heatmaps are aligned (same count and order).
 
 # After printing results
 
-with open("evaluation_results.txt", "w") as f:
-    f.write(f"FID Score: {fid_value:.4f}\n")
-    f.write(f"PSNR: {psnr_value:.4f} dB\n")
-    if gcss_value is not None and cc_value is not None:
-        f.write(f"GCSS: {gcss_value:.4f}\n")
-        f.write(f"Correlation Coefficient (CC): {cc_value:.4f}\n")
-        f.write(f"SSIM: {ssim_value:.4f}\n")
-    else:
-        f.write("Grad-CAM heatmaps not provided, skipping GCSS, CC, and SSIM.\n")
+# with open("evaluation_results.txt", "w") as f:
+#     f.write(f"FID Score: {fid_value:.4f}\n")
+#     f.write(f"PSNR: {psnr_value:.4f} dB\n")
+#     if gcss_value is not None and cc_value is not None:
+#         f.write(f"GCSS: {gcss_value:.4f}\n")
+#         f.write(f"Correlation Coefficient (CC): {cc_value:.4f}\n")
+#         f.write(f"SSIM: {ssim_value:.4f}\n")
+#     else:
+#         f.write("Grad-CAM heatmaps not provided, skipping GCSS, CC, and SSIM.\n")
 
-print("Results saved to evaluation_results.txt")
+# print("Results saved to evaluation_results.txt")

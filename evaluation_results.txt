@@ -1,3 +1,0 @@
-FID Score: 258.7744
-PSNR: 21.4122 dB
-Grad-CAM heatmaps not provided, skipping GCSS, CC, and SSIM.
