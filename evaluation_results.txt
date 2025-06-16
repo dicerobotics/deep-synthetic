@@ -1,0 +1,5 @@
+FID Score: 288.4604
+PSNR: 13.5935 dB
+GCSS: 0.9799
+Correlation Coefficient (CC): 0.3541
+SSIM: 0.7445

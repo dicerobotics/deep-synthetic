@@ -13,26 +13,27 @@ from skimage.metrics import structural_similarity as compare_ssim
 
 # Data Directories
 
-REAL_MWIR = './datasets/mwir_pseudopaired_cut20/real_A/test'
-REAL_MWIR_HEATMAP = './results/ref/real_cam'
+# REAL_MWIR = './datasets/mwir_pseudopaired_cut20/real_A/test'
+REAL_MWIR = './results/psim_start/pix2pix_gradcam_psim2preal_1_10_50/test_latest/images/real_B'
+REAL_MWIR_HEATMAP = './results/psim_start/pix2pix_gradcam_psim2preal_1_10_50/test_latest/images/gradcam_real_B'
 
-OKTAL_SE_MWIR = './datasets/mwir_pseudopaired_cut20/real_B/test'
-OKTAL_SE_MWIR_HEATMAP = './results/oktal/mwir_pix2pix_gradcam/test_evaluate_oktal_start/real_cam'
+OKTAL_SE_MWIR = './results/oktal_target/pix2pix_gradcam_psim2preal_1_10_50/test_latest/images/real_B'
+OKTAL_SE_MWIR_HEATMAP = './results/oktal_target/pix2pix_gradcam_psim2preal_1_10_50/test_latest/images/gradcam_real_B'
 
-CUT_TRANSLATED_MWIR = './datasets/mwir_pseudopaired_cut20/fake_B/test'
-CUT_TRANSLATED_MWIR_HEATMAP = './results/mwir_pix2pix_gradcam/test_evaluate_cut_start/real_cam'
+CUT_TRANSLATED_REAL_MWIR = '.results/cut_real2psim/test_latest/images/fake_B/test'
+CUT_TRANSLATED_REAL_MWIR_HEATMAP = './results/psim_target/pix2pix_gradcam_psim2preal/test_latest/images/gradcam_real_B'
 
-CUT_TRANSLATED_MWIR_TO_PIX2PIX = './results/mwir_pix2pix/test_evaluate_cut_start/fake_B'
-CUT_TRANSLATED_MWIR_TO_PIX2PIX_HEATMAP = './results/mwir_pix2pix/test_evaluate_cut_start/fake_cam'
+CUT_TRANSLATED_MWIR_TO_PIX2PIX = './results/psim_start/pix2pix_gradcam_psim2preal_1_10_0.0001/test_latest/images/fake_B'
+CUT_TRANSLATED_MWIR_TO_PIX2PIX_HEATMAP = './results/psim_start/pix2pix_gradcam_psim2preal_1_10_0.0001/test_latest/images/gradcam_fake_B'
 
-CUT_TRANSLATED_MWIR_TO_PIX2PIXGRADCAM = './results/mwir_pix2pix_gradcam/test_evaluate_cut_start/fake_B'
-CUT_TRANSLATED_MWIR_TO_PIX2PIXGRADCAM_HEATMAP = './results/mwir_pix2pix_gradcam/test_evaluate_cut_start/fake_cam'
+CUT_TRANSLATED_MWIR_TO_PIX2PIXGRADCAM = './results/psim_start/pix2pix_gradcam_psim2preal_1_10_50/test_latest/images/fake_B'
+CUT_TRANSLATED_MWIR_TO_PIX2PIXGRADCAM_HEATMAP = './results/psim_start/pix2pix_gradcam_psim2preal_1_10_50/test_latest/images/gradcam_fake_B'
 
-OKTAL_SE_MWIR_TO_PIX2PIX = './results/oktal/mwir_pix2pix/test_evaluate_oktal_start/fake_B'
-OKTAL_SE_MWIR_TO_PIX2PIX_HEATMAP = './results/oktal/mwir_pix2pix/test_evaluate_oktal_start/fake_cam'
+OKTAL_SE_MWIR_TO_PIX2PIX = './results/oktal_start/pix2pix_gradcam_psim2preal_1_10_0.0001/test_latest/images/fake_B'
+OKTAL_SE_MWIR_TO_PIX2PIX_HEATMAP = './results/oktal_start/pix2pix_gradcam_psim2preal_1_10_0.0001/test_latest/images/gradcam_fake_B'
 
-OKTAL_SE_MWIR_TO_PIX2PIX_GRADCAM = './results/oktal/mwir_pix2pix_gradcam/test_evaluate_oktal_start/fake_B'
-OKTAL_SE_MWIR_TO_PIX2PIX_GRADCAM_HEATMAP = './results/oktal/mwir_pix2pix_gradcam/test_evaluate_oktal_start/fake_cam'
+OKTAL_SE_MWIR_TO_PIX2PIX_GRADCAM = './results/oktal_start/pix2pix_gradcam_psim2preal_1_10_50/test_latest/images/fake_B'
+OKTAL_SE_MWIR_TO_PIX2PIX_GRADCAM_HEATMAP = './results/oktal_start/pix2pix_gradcam_psim2preal_1_10_50/test_latest/images/gradcam_fake_B'
 
 real_dir = REAL_MWIR
 real_cam_dir = REAL_MWIR_HEATMAP
@@ -64,8 +65,8 @@ match evaluation_scenario:
         target_cam_dir = OKTAL_SE_MWIR_TO_PIX2PIX_GRADCAM_HEATMAP
     case 4: #"Contrastive Unpaired Translation (CUT) Pseudopairs"
         print("Evaluating matrics for Contrastive Unpaired Translation (CUT) Pseudopairs")
-        target_dir = CUT_TRANSLATED_MWIR
-        target_cam_dir = CUT_TRANSLATED_MWIR_HEATMAP
+        target_dir = CUT_TRANSLATED_REAL_MWIR
+        target_cam_dir = CUT_TRANSLATED_REAL_MWIR_HEATMAP
     case 5: #"CUT Pseudopairs → Pix2Pix"
         print("Evaluating matrics for CUT Pseudopairs → Pix2Pix")
         target_dir = CUT_TRANSLATED_MWIR_TO_PIX2PIX
@@ -169,13 +170,30 @@ def compute_gcss(cam_real, cam_fake):
 
 
 def compute_ssim(cam_real, cam_fake):
+    """
+    Compute the average SSIM between real and fake CAM images.
+    Assumes inputs are torch tensors with shape (1, H, W) or (H, W).
+    """
     ssim_vals = []
+    
     for real, fake in zip(cam_real, cam_fake):
-        real_np = real.squeeze().numpy()
-        fake_np = fake.squeeze().numpy()
-        ssim, _ = compare_ssim(real_np, fake_np, full=True)
-        ssim_vals.append(ssim)
-    return np.mean(ssim_vals)
+        # Convert to numpy arrays and ensure 2D shape
+        real_np = real.squeeze().detach().cpu().numpy()
+        fake_np = fake.squeeze().detach().cpu().numpy()
+        
+        # Ensure the arrays are float64 for skimage and normalized to [0,1]
+        real_np = real_np.astype(np.float64)
+        fake_np = fake_np.astype(np.float64)
+        
+        # Calculate SSIM with specified data_range
+        data_range = real_np.max() - real_np.min()
+        if data_range == 0:
+            ssim_vals.append(1.0 if np.allclose(real_np, fake_np) else 0.0)
+        else:
+            ssim, _ = compare_ssim(real_np, fake_np, full=True, data_range=data_range)
+            ssim_vals.append(ssim)
+
+    return float(np.mean(ssim_vals))
 
 
 # --- FID calculation ---

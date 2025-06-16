@@ -10,13 +10,13 @@ CHECKPOINTS_DIR=./checkpoints
 # Train a pix2pix_gradcam model (clean start from scratch)
 python ./train.py \
   --dataroot $DATA_ROOT \
-  --name pix2pix_gradcam_psim2preal_tmp \
+  --name pix2pix_gradcam_psim2preal_1_100_0.0001 \
   --model pix2pix_gradcam \
   --direction AtoB \
   --resnet18_path $CLASSIFIER_ROOT \
   --checkpoints_dir $CHECKPOINTS_DIR \
   --lambda_L1 10 \
-  --lambda_gradcam 50 \
+  --lambda_gradcam 0.0001 \
   --n_epochs 100 \
   --n_epochs_decay 100 \
   --gpu_ids 0 \
