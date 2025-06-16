@@ -20,8 +20,8 @@ REAL_MWIR_HEATMAP = './results/psim_start/pix2pix_gradcam_psim2preal_1_10_50/tes
 OKTAL_SE_MWIR = './results/oktal_target/pix2pix_gradcam_psim2preal_1_10_50/test_latest/images/real_B'
 OKTAL_SE_MWIR_HEATMAP = './results/oktal_target/pix2pix_gradcam_psim2preal_1_10_50/test_latest/images/gradcam_real_B'
 
-CUT_TRANSLATED_REAL_MWIR = '.results/cut_real2psim/test_latest/images/fake_B/test'
-CUT_TRANSLATED_REAL_MWIR_HEATMAP = './results/psim_target/pix2pix_gradcam_psim2preal/test_latest/images/gradcam_real_B'
+CUT_TRANSLATED_REAL_MWIR = './results/psim_target/pix2pix_gradcam_psim2preal_1_10_50/test_latest/images/real_B'
+CUT_TRANSLATED_REAL_MWIR_HEATMAP = './results/psim_target/pix2pix_gradcam_psim2preal_1_10_50/test_latest/images/gradcam_real_B'
 
 CUT_TRANSLATED_MWIR_TO_PIX2PIX = './results/psim_start/pix2pix_gradcam_psim2preal_1_10_0.0001/test_latest/images/fake_B'
 CUT_TRANSLATED_MWIR_TO_PIX2PIX_HEATMAP = './results/psim_start/pix2pix_gradcam_psim2preal_1_10_0.0001/test_latest/images/gradcam_fake_B'
@@ -48,7 +48,7 @@ real_cam_dir = REAL_MWIR_HEATMAP
 # 5             CUT Pseudopairs → Pix2Pix 
 # 6             CUT Pseudopairs → Pix2Pix-GradCAM 
 
-evaluation_scenario = 1
+evaluation_scenario = 4
 
 match evaluation_scenario:
     case 1: # "Simulator (Oktal-SE) Output":
