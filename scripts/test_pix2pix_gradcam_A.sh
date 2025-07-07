@@ -1,0 +1,12 @@
+python test.py \
+  --dataroot ./datasets/ADD \
+  --name pix2pix_gradcam_psim2preal_1_10_50 \
+  --model pix2pix_gradcam \
+  --direction AtoB \
+  --dataset_mode single \
+  --normG batch \
+  --preprocess resize_and_crop \
+  --load_size 256 \
+  --crop_size 256 \
+  --resnet18_path checkpoints/classifiers/resnet18_mwir.pth \
+  --lambda_gradcam 50

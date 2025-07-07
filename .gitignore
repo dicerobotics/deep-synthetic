@@ -9,6 +9,9 @@ checkpoints/
 tmp/
 third_party/
 src_old/
+data/epoch_loss_pix2pix.csv
+data/epoch_loss_summary.py
+data/loss_log.txt
 
 
 # Byte-compiled / optimized / DLL files

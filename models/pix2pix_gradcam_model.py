@@ -119,9 +119,20 @@ class Pix2PixGradCAMModel(BaseModel):
             self.loss_names.append('G_gradcam')
 
         # specify the images you want to save/display. The training/test scripts will call <BaseModel.get_current_visuals>
-        self.visual_names = ['real_A', 'fake_B', 'real_B']
-        if self.lambda_gradcam > 0:
-            self.visual_names += ['gradcam_fake_B', 'gradcam_real_B']
+        # self.visual_names = ['real_A', 'fake_B', 'real_B']
+        # if self.lambda_gradcam > 0:
+        #     self.visual_names += ['gradcam_fake_B', 'gradcam_real_B']
+
+        self.visual_names = ['real_A', 'fake_B']
+        if not self.isTrain and self.lambda_gradcam > 0:
+            self.visual_names.append('gradcam_fake_B')
+            # gradcam_real_B will only be added dynamically if available during forward
+            # Or you can just avoid visualizing it when real_B is None
+        if self.isTrain:
+            self.visual_names.append('real_B')
+            if self.lambda_gradcam > 0:
+                self.visual_names += ['gradcam_fake_B', 'gradcam_real_B']
+
 
         # specify the models you want to save to the disk. The training/test scripts will call <BaseModel.save_networks> and <BaseModel.load_networks>
         if self.isTrain:
@@ -159,8 +170,13 @@ class Pix2PixGradCAMModel(BaseModel):
         The option 'direction' can be used to swap images in domain A and domain B.
         """
         AtoB = self.opt.direction == 'AtoB'
+        # self.real_A = input['A' if AtoB else 'B'].to(self.device)
+        # self.real_B = input['B' if AtoB else 'A'].to(self.device)
+        # self.image_paths = input['A_paths' if AtoB else 'B_paths']
         self.real_A = input['A' if AtoB else 'B'].to(self.device)
-        self.real_B = input['B' if AtoB else 'A'].to(self.device)
+        self.real_B = input.get('B' if AtoB else 'A', None)
+        if self.real_B is not None:
+            self.real_B = self.real_B.to(self.device)
         self.image_paths = input['A_paths' if AtoB else 'B_paths']
 
     def forward(self):
@@ -168,11 +184,21 @@ class Pix2PixGradCAMModel(BaseModel):
         self.fake_B = self.netG(self.real_A)  # G(A)
 
         # Compute Grad-CAM heatmaps here for visualization
+        # if self.cam_model is not None and self.lambda_gradcam > 0:
+        #     self.gradcam_real_B, _ = self.compute_batch_gradcam_heatmaps(self.real_B)
+        #     self.gradcam_fake_B, _ = self.compute_batch_gradcam_heatmaps(self.fake_B)
+        #     self.gradcam_real_B.detach()
+        #     self.gradcam_fake_B.detach()
+
         if self.cam_model is not None and self.lambda_gradcam > 0:
-            self.gradcam_real_B, _ = self.compute_batch_gradcam_heatmaps(self.real_B)
+            if self.real_B is not None:
+                self.gradcam_real_B, _ = self.compute_batch_gradcam_heatmaps(self.real_B)
+            else:
+                self.gradcam_real_B = torch.zeros_like(self.fake_B)  # dummy tensor or skip visualization
             self.gradcam_fake_B, _ = self.compute_batch_gradcam_heatmaps(self.fake_B)
-            self.gradcam_real_B.detach()
-            self.gradcam_fake_B.detach()
+            self.gradcam_fake_B.detach_()
+            if self.gradcam_real_B is not None:
+                self.gradcam_real_B.detach_()
 
     def backward_D(self):
         """Calculate GAN loss for the discriminator"""

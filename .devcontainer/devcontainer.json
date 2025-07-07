@@ -1,18 +1,13 @@
 {
   "name": "deep-synthetic-dev",
   "image": "nvcr.io/nvidia/pytorch:23.08-py3",
-  "workspaceFolder": "/workspace/deep-synthetic",
+  "workspaceFolder": "/workspaces/deep-synthetic",
 
   "runArgs": [
     "--gpus", "all",
     "--ipc=host",
     "--ulimit", "memlock=-1",
     "--ulimit", "stack=67108864"
-  ],
-
-  "mounts": [
-    "source=${localWorkspaceFolder},target=/workspace/deep-synthetic,type=bind",
-    "type=bind,source=${env:SSH_AUTH_SOCK},target=/ssh-agent"
   ],
 
   "remoteEnv": {
@@ -31,5 +26,5 @@
     }
   },
 
-  "postCreateCommand": "mkdir -p ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts && git config --global user.name 'dicerobotics' && git config --global user.email 'arshad.ae@hotmail.com' && pip install -r requirements.txt"
+  "postCreateCommand": "mkdir -p ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts && git config --global user.name 'dicerobotics' && git config --global user.email 'dicerobotics@hotmail.com' && pip install -r requirements.txt"
 }

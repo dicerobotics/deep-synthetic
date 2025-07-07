@@ -10,6 +10,9 @@ from skimage.metrics import peak_signal_noise_ratio as compare_psnr
 from scipy.stats import pearsonr
 from skimage.metrics import structural_similarity as compare_ssim
 
+from torchvision.models.segmentation import fcn_resnet50
+import torch.nn.functional as F
+
 
 # Data Directories
 
@@ -35,10 +38,6 @@ OKTAL_SE_MWIR_TO_PIX2PIX_HEATMAP = './results/oktal_start/pix2pix_gradcam_psim2p
 OKTAL_SE_MWIR_TO_PIX2PIX_GRADCAM = './results/oktal_start/pix2pix_gradcam_psim2preal_1_10_50/test_latest/images/fake_B'
 OKTAL_SE_MWIR_TO_PIX2PIX_GRADCAM_HEATMAP = './results/oktal_start/pix2pix_gradcam_psim2preal_1_10_50/test_latest/images/gradcam_fake_B'
 
-real_dir = REAL_MWIR
-real_cam_dir = REAL_MWIR_HEATMAP
-
-
 # --- Config Evaluation Scenarios---
 # Scenario      Description
 # 1             Simulator (Oktal-SE) Output 
@@ -48,7 +47,10 @@ real_cam_dir = REAL_MWIR_HEATMAP
 # 5             CUT Pseudopairs → Pix2Pix 
 # 6             CUT Pseudopairs → Pix2Pix-GradCAM 
 
-evaluation_scenario = 1
+
+real_dir = REAL_MWIR
+real_cam_dir = REAL_MWIR_HEATMAP
+evaluation_scenario = 4
 
 match evaluation_scenario:
     case 1: # "Simulator (Oktal-SE) Output":
@@ -78,12 +80,6 @@ match evaluation_scenario:
     case _:
         sys.exit("Error: No valid matching case for evaluation scenario. Aborting operations.")
 
-
-
-# real_dir = REAL_MWIR
-# target_dir = CUT_TRANS_TO_PIX2PIX #CUT_TRANS_TO_PIX2PIXGRADCAM #OKTAL_SE_MWIR #CUT_TRANS_MWIR
-# real_cam_dir = REAL_MWIR_HEATMAP      # Optional if you have Grad-CAM heatmaps saved as images
-# target_cam_dir = CUT_TRANS_TO_PIX2PIX_HEATMAP #CUT_TRANS_TO_PIX2PIXGRADCAM_HEATMAP      # Optional
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
@@ -196,14 +192,88 @@ def compute_ssim(cam_real, cam_fake):
     return float(np.mean(ssim_vals))
 
 
-# --- FID calculation ---
+# --- Compute Relative FCN Scores Pretrained ResNet50---
+def compute_relative_fcn_scores(real_imgs, fake_imgs):
+    model = fcn_resnet50(pretrained=True).eval().to(device)
+    preprocess = transforms.Compose([
+        transforms.Resize((256, 256)),
+        transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                             std=[0.229, 0.224, 0.225])
+    ])
+    pixel_accs, mean_ious = [], []
+    for real, fake in zip(real_imgs, fake_imgs):
+        real_tensor = preprocess(real).unsqueeze(0).to(device)
+        fake_tensor = preprocess(fake).unsqueeze(0).to(device)
+        with torch.no_grad():
+            pred_real = model(real_tensor)['out'].argmax(1).squeeze().cpu().numpy()
+            pred_fake = model(fake_tensor)['out'].argmax(1).squeeze().cpu().numpy()
+        mask = (pred_real >= 0)
+        pixel_acc = np.mean(pred_fake[mask] == pred_real[mask])
+        classes = np.unique(pred_real)
+        ious = [
+            np.sum((pred_fake == c) & (pred_real == c)) / (np.sum((pred_fake == c) | (pred_real == c)) + 1e-8)
+            for c in classes if np.sum(pred_real == c) > 0
+        ]
+        pixel_accs.append(pixel_acc)
+        mean_ious.append(np.mean(ious))
+    return np.mean(pixel_accs), np.mean(mean_ious)
 
+
+
+# --- Relative FCN Score Evaluation using Custom ResNet18 Classifier ---
+def compute_relative_fcn_scores_local(real_imgs, fake_imgs, model_path):
+    from torchvision.models import resnet18
+
+    # Load your trained ResNet18 classifier with a 7-class classification head
+    model = resnet18(pretrained=False, num_classes=7)
+    model.load_state_dict(torch.load(model_path, map_location=device))
+    model.to(device)
+    model.eval()
+
+    preprocess = transforms.Compose([
+        transforms.Resize((224, 224)),
+        transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                             std=[0.229, 0.224, 0.225])
+    ])
+
+    pixel_accs, mean_ious = [], []
+    for real, fake in zip(real_imgs, fake_imgs):
+        real_tensor = preprocess(real).unsqueeze(0).to(device)
+        fake_tensor = preprocess(fake).unsqueeze(0).to(device)
+
+        with torch.no_grad():
+            pred_real = model(real_tensor).argmax(1).cpu().numpy()
+            pred_fake = model(fake_tensor).argmax(1).cpu().numpy()
+
+        # Fake 'segmentation' masks as class predictions
+        # Comparing predicted class IDs for similarity
+        pixel_acc = float(pred_fake[0] == pred_real[0])  # since shape is (1,)
+        iou = 1.0 if pred_fake[0] == pred_real[0] else 0.0
+
+        pixel_accs.append(pixel_acc)
+        mean_ious.append(iou)
+
+    return np.mean(pixel_accs), np.mean(mean_ious)
+
+
+RESNET18_MODEL_PATH = './checkpoints/classifiers/resnet18_mwir.pth'
+
+
+
+# --- FID calculation ---
 print("Calculating FID score...")
 fid_value = calculate_fid_given_paths([real_dir, target_dir], batch_size=50, device=device, dims=2048)
 
 # --- PSNR calculation ---
 print("Calculating PSNR...")
 psnr_value = compute_psnr(real_images, fake_images)
+
+# --- FCN scores calculations ---
+print("Computing FCN scores (no labels, relative comparison)...")
+fcn_pixel_acc, fcn_mean_iou = compute_relative_fcn_scores(real_images, fake_images)
+# print("Computing FCN scores (with custom ResNet18 classifier trained on MWIR dataset)...")
+# fcn_pixel_acc, fcn_mean_iou = compute_relative_fcn_scores_local(real_images, fake_images, RESNET18_MODEL_PATH)
+
 
 # --- GCSS and CC calculation ---
 if real_cams is not None and fake_cams is not None:
@@ -221,10 +291,14 @@ else:
     ssim_value = None
 
 
+
 # --- Print results ---
 
 print(f"FID Score: {fid_value:.4f}")
 print(f"PSNR: {psnr_value:.4f} dB")
+print(f"Relative FCN Pixel Accuracy: {fcn_pixel_acc:.4f}")
+print(f"Relative FCN Mean IoU: {fcn_mean_iou:.4f}")
+
 if gcss_value is not None and cc_value is not None:
     print(f"GCSS: {gcss_value:.4f}")
     print(f"Correlation Coefficient (CC): {cc_value:.4f}")
@@ -233,27 +307,3 @@ if gcss_value is not None and cc_value is not None:
 else:
     print("Grad-CAM heatmaps not provided, skipping GCSS, CC, and SSIM.")
 
-
-"""
-How to use:
-Replace the paths in real_dir, fake_dir, real_cam_dir, and fake_cam_dir with your actual folders.
-
-If you do not have Grad-CAM heatmaps saved as images, skip those parts and GCSS, CC, and SSIM will be skipped.
-
-Make sure your images and heatmaps are aligned (same count and order).
-"""
-
-
-# After printing results
-
-# with open("evaluation_results.txt", "w") as f:
-#     f.write(f"FID Score: {fid_value:.4f}\n")
-#     f.write(f"PSNR: {psnr_value:.4f} dB\n")
-#     if gcss_value is not None and cc_value is not None:
-#         f.write(f"GCSS: {gcss_value:.4f}\n")
-#         f.write(f"Correlation Coefficient (CC): {cc_value:.4f}\n")
-#         f.write(f"SSIM: {ssim_value:.4f}\n")
-#     else:
-#         f.write("Grad-CAM heatmaps not provided, skipping GCSS, CC, and SSIM.\n")
-
-# print("Results saved to evaluation_results.txt")
